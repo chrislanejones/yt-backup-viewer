@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cat:*)",
+      "Bash(mv:*)",
+      "Bash(find:*)",
+      "Bash(-e 's/bg-white/bg-gray-800/g' )",
+      "Bash(-e 's/bg-gray-50/bg-gray-900/g' )",
+      "Bash(-e 's/bg-gray-100/bg-gray-800/g' )",
+      "Bash(-e 's/bg-gray-200/bg-gray-700/g' )",
+      "Bash(-e 's/text-gray-900/text-gray-100/g' )",
+      "Bash(-e 's/text-gray-800/text-gray-200/g' )",
+      "Bash(-e 's/text-gray-600/text-gray-400/g' )",
+      "Bash(-e 's/text-gray-500/text-gray-500/g' )",
+      "Bash(-e 's/border-gray-200/border-gray-700/g' )",
+      "Bash(-e 's/border-gray-300/border-gray-600/g' )",
+      "Bash(-e 's/hover:bg-gray-50/hover:bg-gray-700/g' )",
+      "Bash(-e 's/hover:bg-red-50/hover:bg-red-900/g' )",
+      "Bash(-e 's/text-primary/text-blue-400/g' )",
+      "Bash(-e 's/text-secondary/text-gray-400/g' )",
+      "Bash(-e 's/border-primary/border-blue-500/g' {} ;)",
+      "Bash(rm:*)",
+      "Bash(grep:*)"
+    ],
+    "deny": []
+  }
+}
