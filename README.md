@@ -1,4 +1,4 @@
-# YouTube Backup Viewer - Because YouTube Forget Everything Over 5000
+# YouTube Backup Viewer - Because YouTube Forgets Everything Over 5000
 
 ![YouTube Backup Viewer Screenshot](public/YT-Backup-Viewer-Screenshot.jpg)
 
