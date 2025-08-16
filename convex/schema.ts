@@ -27,6 +27,7 @@ const applicationTables = {
     .index("by_channel", ["channel"])
     .index("by_user_and_date", ["userId", "parsedDate"])
     .index("by_user_removed", ["userId", "isRemoved"])
+    .index("by_user_and_url", ["userId", "url"])
     .searchIndex("search_title", {
       searchField: "title",
       filterFields: ["channel", "userId"],

@@ -35,19 +35,36 @@ cd yt-backup-viewer
 npm install
 ```
 
-3. Set up Convex (backend):
+3. Set up Clerk Authentication (optional - for GitHub login):
+
+   a. Create a Clerk account at [clerk.com](https://clerk.com)
+   
+   b. Create a new application and enable GitHub OAuth
+   
+   c. Update `.env.local` with your Clerk credentials:
+   ```
+   VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+   CLERK_JWT_ISSUER_DOMAIN=https://your-domain.clerk.accounts.dev
+   ```
+   
+   d. Add `CLERK_JWT_ISSUER_DOMAIN` to Convex environment variables:
+      - Go to your [Convex Dashboard](https://dashboard.convex.dev)
+      - Navigate to Settings > Environment Variables
+      - Add `CLERK_JWT_ISSUER_DOMAIN` with your Clerk domain
+
+4. Set up Convex (backend):
 
 ```bash
 npx convex dev
 ```
 
-4. Start the development server:
+5. Start the development server:
 
 ```bash
 npm run dev
 ```
 
-5. Open [http://localhost:5173](http://localhost:5173) in your browser
+6. Open [http://localhost:5173](http://localhost:5173) in your browser
 
 ## Using the History Scraper
 
@@ -148,7 +165,9 @@ The app automatically detects content types based on filename patterns:
 │   ├── schema.ts               # Database schema
 │   └── auth.config.ts          # Authentication config
 ├── scrapper/
-│   └── History-Scraper.js      # YouTube history scraper script
+│   ├── History-Scraper.js      # YouTube history scraper script
+│   ├── Likes-Scraper.js        # YouTube likes scraper script
+│   └── Watch-Later-Scraper.js  # YouTube watch later scraper script
 └── README.md                   # This file
 ```
 
@@ -164,7 +183,7 @@ The app automatically detects content types based on filename patterns:
 - **Backend**: Convex (real-time database and auth)
 - **Build Tool**: Vite
 - **Styling**: Tailwind CSS with custom dark theme
-- **Authentication**: Convex Auth
+- **Authentication**: Convex Auth + Clerk (optional GitHub OAuth)
 
 ## Roadmap
 

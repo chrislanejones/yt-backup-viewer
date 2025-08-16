@@ -46,17 +46,19 @@ export const importVideos = mutation({
     const importId = `import_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const importedAt = new Date().toISOString();
 
-    // Get existing videos to track removals
+    // Get existing videos for this content type to track removals and avoid duplicates
+    const contentType = args.contentType || "History";
     const existingVideos = await ctx.db
       .query("videos")
       .withIndex("by_user", (q) => q.eq("userId", userId))
+      .filter((q) => q.eq(q.field("contentType"), contentType))
       .collect();
 
     // Create a map of existing videos by URL for quick lookup
     const existingVideoMap = new Map(existingVideos.map(v => [v.url, v]));
     const newVideoUrls = new Set(args.videos.map(v => v.url));
 
-    // Mark videos as removed if they're not in the new import
+    // Mark videos as removed if they're not in the new import for this content type
     for (const existingVideo of existingVideos) {
       if (!newVideoUrls.has(existingVideo.url) && !existingVideo.isRemoved) {
         await ctx.db.patch(existingVideo._id, {
@@ -65,30 +67,54 @@ export const importVideos = mutation({
       }
     }
 
-    // Process new videos
+    // Process new videos and avoid duplicates within the same content type
+    let addedCount = 0;
+    let updatedCount = 0;
+    
     for (const video of args.videos) {
       const parsedDate = parseScrapedDate(video.scrapedAt, video.viewDate);
       const existingVideo = existingVideoMap.get(video.url);
 
       if (existingVideo) {
-        // Update existing video
+        // Update existing video with latest data
         await ctx.db.patch(existingVideo._id, {
           ...video,
           parsedDate,
           lastSeen: importId,
           isRemoved: false, // Mark as not removed since it's in current import
-          contentType: args.contentType || "History",
+          contentType: contentType,
         });
+        updatedCount++;
       } else {
-        // Insert new video
-        await ctx.db.insert("videos", {
-          ...video,
-          parsedDate,
-          userId,
-          lastSeen: importId,
-          isRemoved: false,
-          contentType: args.contentType || "History",
-        });
+        // Check if this URL exists for a different content type
+        const existingVideoOtherType = await ctx.db
+          .query("videos")
+          .withIndex("by_user_and_url", (q) => q.eq("userId", userId).eq("url", video.url))
+          .first();
+        
+        if (existingVideoOtherType && existingVideoOtherType.contentType !== contentType) {
+          // Video exists with different content type, insert as new entry
+          await ctx.db.insert("videos", {
+            ...video,
+            parsedDate,
+            userId,
+            lastSeen: importId,
+            isRemoved: false,
+            contentType: contentType,
+          });
+          addedCount++;
+        } else if (!existingVideoOtherType) {
+          // Completely new video
+          await ctx.db.insert("videos", {
+            ...video,
+            parsedDate,
+            userId,
+            lastSeen: importId,
+            isRemoved: false,
+            contentType: contentType,
+          });
+          addedCount++;
+        }
       }
     }
 
@@ -100,7 +126,12 @@ export const importVideos = mutation({
       importId,
     });
 
-    return { imported: args.videos.length };
+    return { 
+      imported: args.videos.length,
+      added: addedCount,
+      updated: updatedCount,
+      contentType: contentType
+    };
   },
 });
 

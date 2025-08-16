@@ -20,7 +20,9 @@
       "Bash(-e 's/text-secondary/text-gray-400/g' )",
       "Bash(-e 's/border-primary/border-blue-500/g' {} ;)",
       "Bash(rm:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run lint)"
     ],
     "deny": []
   }

@@ -66,10 +66,21 @@ export function YouTubeHistoryViewer() {
       const detectedType = detectContentType(file.name);
       setCurrentContentType(detectedType);
 
-      await importVideos({ videos: data, contentType: detectedType });
-      toast.success(
-        `Successfully imported ${data.length} ${detectedType.toLowerCase()} videos!`
-      );
+      const result = await importVideos({ videos: data, contentType: detectedType });
+      
+      if (result.added === 0 && result.updated === 0) {
+        toast.info(
+          `No new videos to import - all ${data.length} ${detectedType.toLowerCase()} videos already exist.`
+        );
+      } else {
+        const messages = [];
+        if (result.added > 0) messages.push(`${result.added} new`);
+        if (result.updated > 0) messages.push(`${result.updated} updated`);
+        
+        toast.success(
+          `Successfully imported ${result.imported} ${detectedType.toLowerCase()} videos (${messages.join(', ')})!`
+        );
+      }
 
       // Reset file input
       if (fileInputRef.current) {
@@ -189,7 +200,7 @@ export function YouTubeHistoryViewer() {
               ref={fileInputRef}
               type="file"
               accept=".json"
-              onChange={handleFileUpload}
+              onChange={(e) => void handleFileUpload(e)}
               className="hidden"
             />
             <button
@@ -474,7 +485,7 @@ export function YouTubeHistoryViewer() {
 
                   {/* Month Pills - always show */}
                   <div className="flex flex-wrap gap-1 pl-2 pt-2">
-                    {months.map(({ month, count: monthCount }) => (
+                    {months.map(({ month, count: _monthCount }) => (
                       <button
                         key={month}
                         onClick={() =>
