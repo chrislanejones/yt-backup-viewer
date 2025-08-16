@@ -8,12 +8,12 @@ const applicationTables = {
     title: v.string(),
     url: v.string(),
     channel: v.string(),
-    thumbnail: v.string(),
+    thumbnail: v.string(), // Always string from scrapers (can be empty)
     timeText: v.optional(v.string()),
-    duration: v.optional(v.string()),
-    viewDate: v.optional(v.string()), // YYYY-MM-DD format from JSON
+    duration: v.optional(v.string()), // Always string from scrapers (can be empty)
+    viewDate: v.optional(v.string()), // Can be "Unknown" or date string
     originalViewDate: v.optional(v.string()),
-    sectionDate: v.optional(v.string()),
+    sectionDate: v.optional(v.union(v.string(), v.null())), // Can be null from scrapers
     scrapedAt: v.string(),
     videoId: v.optional(v.string()),
     isWatched: v.optional(v.boolean()),

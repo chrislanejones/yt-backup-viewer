@@ -4,21 +4,8 @@ import { SignInForm } from "./SignInForm";
 import { SignOutButton } from "./SignOutButton";
 import { Toaster } from "sonner";
 import { YouTubeHistoryViewer } from "./YouTubeHistoryViewer";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { SSOCallback } from "./sso-callback";
 
 export default function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/sso-callback" element={<SSOCallback />} />
-        <Route path="/*" element={<MainApp />} />
-      </Routes>
-    </BrowserRouter>
-  );
-}
-
-function MainApp() {
   return (
     <div className="min-h-screen flex flex-col bg-gray-900">
       <header className="sticky top-0 z-10 bg-gray-800/90 backdrop-blur-sm h-16 flex justify-between items-center border-b border-gray-700 shadow-sm px-4">

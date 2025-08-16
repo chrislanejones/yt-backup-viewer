@@ -22,7 +22,12 @@
       "Bash(rm:*)",
       "Bash(grep:*)",
       "Bash(npm install:*)",
-      "Bash(npm run lint)"
+      "Bash(npm run lint)",
+      "WebFetch(domain:www.npmjs.com)",
+      "Bash(ls:*)",
+      "WebFetch(domain:labs.convex.dev)",
+      "Bash(npm search:*)",
+      "Bash(npm run dev:*)"
     ],
     "deny": []
   }

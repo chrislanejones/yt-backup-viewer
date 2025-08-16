@@ -4,8 +4,8 @@ import { getAuthUserId } from "@convex-dev/auth/server";
 import { paginationOptsValidator } from "convex/server";
 
 function parseScrapedDate(scrapedAt: string, viewDate?: string): string {
-  // Prefer viewDate if available, otherwise parse scrapedAt
-  if (viewDate) {
+  // Prefer viewDate if available and not "Unknown", otherwise parse scrapedAt
+  if (viewDate && viewDate !== "Unknown") {
     return viewDate;
   }
   try {
@@ -24,12 +24,12 @@ export const importVideos = mutation({
         title: v.string(),
         url: v.string(),
         channel: v.string(),
-        thumbnail: v.string(),
+        thumbnail: v.string(), // Always string from scrapers (can be empty)
         timeText: v.optional(v.string()),
-        duration: v.optional(v.string()),
-        viewDate: v.optional(v.string()),
+        duration: v.optional(v.string()), // Always string from scrapers (can be empty)
+        viewDate: v.optional(v.string()), // Can be "Unknown" or date string
         originalViewDate: v.optional(v.string()),
-        sectionDate: v.optional(v.string()),
+        sectionDate: v.optional(v.union(v.string(), v.null())), // Can be null from scrapers or missing from History scraper
         scrapedAt: v.string(),
         videoId: v.optional(v.string()),
         isWatched: v.optional(v.boolean()),

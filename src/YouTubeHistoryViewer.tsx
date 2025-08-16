@@ -172,7 +172,7 @@ export function YouTubeHistoryViewer() {
         <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-gray-100">
-              Your YouTube {currentContentType}
+              Your YouTube {contentTypeFilter || "Content"}
             </h1>
             <p className="text-gray-400 mt-1">
               <span className="text-emerald-400 font-medium">{videoCount}</span>{" "}
