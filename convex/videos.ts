@@ -33,6 +33,7 @@ export const importVideos = mutation({
         scrapedAt: v.string(),
         videoId: v.optional(v.string()),
         isWatched: v.optional(v.boolean()),
+        list: v.optional(v.string()),
       })
     ),
     contentType: v.optional(v.string()),

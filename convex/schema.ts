@@ -17,6 +17,7 @@ const applicationTables = {
     scrapedAt: v.string(),
     videoId: v.optional(v.string()),
     isWatched: v.optional(v.boolean()),
+    list: v.optional(v.string()), // Playlist identifier from scrapers
     parsedDate: v.optional(v.string()), // YYYY-MM-DD format for grouping
     userId: v.id("users"),
     isRemoved: v.optional(v.boolean()), // Track if video was removed
